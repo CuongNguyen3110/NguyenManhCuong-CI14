@@ -8,15 +8,14 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class GamePanel extends JPanel {
-    Background background;
-    Player player;
-    static ArrayList<PlayerBullet> bullets; //TODO: continue editing
 
     public GamePanel() {
-        this.background = new Background();
-        this.player = new Player();
-        this.bullets = new ArrayList<>();
-//        this.bullets.add();
+        new Background();
+        new Player();
+//        this.background = new Background();
+//        this.player = new Player();
+//        this.bullets = new ArrayList<>();
+////        this.bullets.add();
 //        this.bullets.size();
 //        this.bullets.get();
     }
@@ -26,12 +25,12 @@ public class GamePanel extends JPanel {
         // ve game
 //        g.drawRect(100,100, 50,50);
 //        g.drawImage(this.backgroundImage,this.backgroundX,this.backgroundY,null);
-        this.background.render(g);
-        this.player.render(g);
-        for(int i = 0; i < this.bullets.size(); i++) {
-            PlayerBullet bullet = this.bullets.get(i);
-            bullet.render(g);
-        }
+//        this.background.render(g);
+//        this.player.render(g);
+//        for(int i = 0; i < this.bullets.size(); i++) {
+//            PlayerBullet bullet = this.bullets.get(i);
+//            bullet.render(g);
+        GameObject.renderAll(g);
     }
 
     public void gameloop() {
@@ -47,12 +46,12 @@ public class GamePanel extends JPanel {
         }
     }
     public void runAll() {
-        this.background.run();
-        this.player.run();
-        for(int i = 0; i < this.bullets.size(); i++) {
-            PlayerBullet bullet = this.bullets.get(i);
-            bullet.run();
-        }
+//        this.background.run();
+//        this.player.run();
+//        for(int i = 0; i < this.bullets.size(); i++) {
+//            PlayerBullet bullet = this.bullets.get(i);
+//            bullet.run();
+        GameObject.runAll();
     }
     public void renderAll() {
         this.repaint();

@@ -20,21 +20,34 @@ public class Vector2D {
         return this;
     }
 
+    public Vector2D add(Vector2D other) {
+        return this.add(other.x, other.y);
+    }
+
     public Vector2D subtract(float x, float y) {
         this.x -= x;
         this.y -= y;
         return this;
     }
 
+    public Vector2D subtract(Vector2D other) {
+        return this.subtract(other.x, other.y);
+    }
+
     public Vector2D scale(float rate) {
         this.x *= rate;
         this.y *= rate;
+        return this;
     }
 
     public Vector2D set(float x, float y) {
         this.x = x;
         this.y = y;
         return this;
+    }
+
+    public Vector2D set(Vector2D other) {
+        return this.set(other.x, other.y);
     }
 
     public Vector2D clone() {
@@ -55,7 +68,7 @@ public class Vector2D {
     }
 
     public float getAngle() {
-        return Math.atan(this.y / this.x);
+        return (float)Math.atan(this.y / this.x);
     }
 
     public Vector2D setAngle(float angle) {

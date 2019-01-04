@@ -5,27 +5,31 @@ import tklibs.SpriteUtils;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Player {
-    BufferedImage image;
-    Vector2D position;
-//    float x;
-//    float y;
+public class Player extends GameObject {
+    Sphere sphereLeft;
+    Sphere sphereRight;
 
     public Player() {
+        super();
         this.image = SpriteUtils.loadImage("assets/images/players/straight/0.png");
-        this.position = new Vector2D(200, 400);
-//        this.x = 200;
-//        this.y = 400;
+        this.position.set(200, 400);
+        this.sphereLeft = new Sphere();
+        this.sphereRight = new Sphere();
+        this.updateSpherePosition();
     }
 
-    public void render(Graphics g) {
-        g.drawImage(this.image, (int)this.position.x, (int)this.position.y, null);
-    }
-
+    @Override
     public void run() {
+        super.run();
         this.move();
         this.limitPosition();
         this.fire();
+        this.updateSpherePosition();
+    }
+
+    private void updateSpherePosition() {
+        this.sphereLeft.position.set(this.position).add(-20, 30);
+        this.sphereRight.position.set(this.position).add(30, 30);
     }
 
     int count; // TODO: continue editing
@@ -33,11 +37,16 @@ public class Player {
         count++;
         if(count > 20) {
             if(GameWindow.isFirePress) {
-                PlayerBullet bullet = new PlayerBullet();
-                bullet.x = this.position.x;
-                bullet.y = this.position.y;
-                GamePanel.bullets.add(bullet);
-                this.count = 0;
+                float startAngle = -(float)Math.PI / 4;
+                float endAngle = -3 * (float)Math.PI / 4;
+                float offset = (endAngle - startAngle) / 4;
+
+                for (int i = 0; i < 5; i++) {
+                    PlayerBullet bullet = new PlayerBullet();
+                    bullet.position.set(this.position.x, this.position.y);
+                    bullet.velocity.setAngle(startAngle + offset * i);
+                    this.count = 0;
+                }
             }
         }
     }
@@ -58,17 +67,24 @@ public class Player {
     }
 
     private void move() {
+        float vX = 0;
+        float vY = 0;
         if(GameWindow.isUpPress) {
-            this.position.y -= 5;
+            vY = -5;
+//            this.position.y -= 5;
         }
         if(GameWindow.isDownPress) {
-            this.position.y += 5;
+            vY = 5;
+//            this.position.y += 5;
         }
         if(GameWindow.isLeftPress) {
-            this.position.x -= 5;
+            vX = -5;
+//            this.position.x -= 5;
         }
         if(GameWindow.isRightPress) {
-            this.position.x += 5;
+            vX = 5;
+//            this.position.x += 5;
         }
+        this.velocity.set(vX, vY).setLength(5);
     }
 }
