@@ -11,14 +11,28 @@ public class Rectangle {
         this.height = height;
     }
 
+    public float top() {
+        return this.position.y;
+    }
+
+    public float bot() {
+        return this.top() + this.height;
+    }
+
+    public float left() {
+        return this.position.x;
+    }
+
+    public float right() {
+        return this.left() + this.width;
+    }
+
     public boolean intersected(Rectangle other) {
-        //TODO: kiem tra giao nhau giua hinh 'this' va 'other'
-        if(this.position.x + this.width < other.position.x || this.position.y + this.height < other.position.x) {
-            return false;
-        } else if(other.position.x + other.width < this.position.x || other.position.y + other.width < this.position.y){
-            return false;
-        }
-        return true;
+        // kiem tra giao nhau giua hinh 'this' va 'other'
+        return this.top() <= other.bot()
+                && this.bot() >= other.top()
+                && this.right() >= other.left()
+                && this.left() <= other.right();
     }
 
     public static void main(String[] args) {
