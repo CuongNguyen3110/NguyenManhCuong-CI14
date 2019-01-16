@@ -1,6 +1,7 @@
 package game;
 
 import game.enemy.Enemy;
+import game.enemy.EnemySummoner;
 import tklibs.SpriteUtils;
 
 import javax.swing.*;
@@ -11,9 +12,13 @@ import java.util.ArrayList;
 public class GamePanel extends JPanel {
 
     public GamePanel() {
-        new Background();
-        new Player();
-        Enemy enemy = new Enemy();
+//        new Background();
+//        new Player();
+//        Enemy enemy = new Enemy();
+        GameObject.recycle(EnemySummoner.class);
+        GameObject.recycle(Background.class);
+        GameObject.recycle(Player.class);
+        Enemy enemy = GameObject.recycle(Enemy.class);
         enemy.position.set(100, 200);
 //        this.background = new Background();
 //        this.player = new Player();

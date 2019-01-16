@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Sphere extends GameObject {
-    Animation animation;
+    FrameCounter fireCounter;
 
     public Sphere() {
         ArrayList<BufferedImage> images = new ArrayList<>();
@@ -17,6 +17,7 @@ public class Sphere extends GameObject {
         images.add(SpriteUtils.loadImage("assets/images/sphere/2.png"));
         images.add(SpriteUtils.loadImage("assets/images/sphere/3.png"));
         this.renderer = new Animation(images);
+        this.fireCounter = new FrameCounter(20);
 //        this.image = SpriteUtils.loadImage("assets/images/sphere/3.png");
     }
 
@@ -26,19 +27,13 @@ public class Sphere extends GameObject {
         this.fire();
     }
 
-    int count; // TODO: continue editing
     private void fire() {
-        this.count++;
-        if(this.count > 20) {
-            SphereBullet bullet = new SphereBullet();
+        if(this.fireCounter.run()) {
+//            SphereBullet bullet = new SphereBullet();
+            SphereBullet bullet = GameObject.recycle(SphereBullet.class);
             bullet.position.set(this.position);
-            this.count = 0;
+            this.fireCounter.reset();
         }
     }
 
-
-    @Override
-    public void render(Graphics g) {
-        this.renderer.render(g, this);
-    }
 }

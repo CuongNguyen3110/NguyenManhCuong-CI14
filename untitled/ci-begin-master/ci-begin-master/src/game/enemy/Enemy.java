@@ -1,15 +1,19 @@
 package game.enemy;
 
+import game.FrameCounter;
+import physics.BoxColider;
+import physics.Physics;
 import game.GameObject;
-import game.Vector2D;
 import game.renderer.Animation;
 import tklibs.SpriteUtils;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class Enemy extends GameObject {
+public class Enemy extends GameObject implements Physics {
+    BoxColider boxColider;
+    FrameCounter fireCounter;
+
     public Enemy() {
         ArrayList<BufferedImage> images = new ArrayList<>();
         images.add(SpriteUtils.loadImage("assets/images/enemies/level0/pink/0.png"));
@@ -18,6 +22,8 @@ public class Enemy extends GameObject {
         images.add(SpriteUtils.loadImage("assets/images/enemies/level0/pink/3.png"));
         this.renderer = new Animation(images);
         this.velocity.set(2,0);
+        this.boxColider = new BoxColider(this, 30,30);
+        this.fireCounter = new FrameCounter(5);
     }
 
     @Override
@@ -34,13 +40,17 @@ public class Enemy extends GameObject {
         }
     }
 
-    int count;
     public void fire() {
-        this.count++;
-        if(this.count > 30) {
-            EnemyBullet enemyBullet = new EnemyBullet();
-            enemyBullet.position.set(this.position.x, this.position.y);
-            this.count = 0;
+        if(this.fireCounter.run()) {
+//            EnemyBullet enemyBullet = new EnemyBullet();
+            EnemyBullet enemyBullet = GameObject.recycle(EnemyBullet.class);
+            enemyBullet.position.set(this.position);
+            this.fireCounter.reset();
         }
+    }
+
+    @Override
+    public BoxColider getBoxColider() {
+        return this.boxColider;
     }
 }
